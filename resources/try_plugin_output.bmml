@@ -1,0 +1,26 @@
+<mockup version="1.0" skin="sketch" fontFace="Balsamiq Sans" measuredW="1005" measuredH="483" mockupW="769" mockupH="438">
+  <controls>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::Canvas" x="255" y="75" w="413" h="200" measuredW="100" measuredH="70" zOrder="0" locked="false" isInGroup="-1"/>
+    <control controlID="15" controlTypeID="com.balsamiq.mockups::VerticalScrollBar" x="958" y="112" w="-1" h="234" measuredW="16" measuredH="100" zOrder="4" locked="false" isInGroup="-1"/>
+    <control controlID="20" controlTypeID="com.balsamiq.mockups::TabBar" x="236" y="45" w="769" h="438" measuredW="387" measuredH="100" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Try%20Command%20Configuration%2C%20Try%20Command%20Output</text>
+      </controlProperties>
+    </control>
+    <control controlID="33" controlTypeID="com.balsamiq.mockups::Label" x="258" y="85" w="152" h="-1" measuredW="128" measuredH="21" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Try%20Command%20Output</text>
+      </controlProperties>
+    </control>
+    <control controlID="34" controlTypeID="com.balsamiq.mockups::TextArea" x="256" y="111" w="718" h="236" measuredW="200" measuredH="140" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>running....%0A%20%0A%20%0Atest%0Atest%0Atest%0A...%0A%20%0Atest%0A...%0A%20%0AAll%20Ok%0ATry%20command%20completed</text>
+      </controlProperties>
+    </control>
+    <control controlID="35" controlTypeID="com.balsamiq.mockups::Button" x="255" y="361" w="88" h="41" measuredW="88" measuredH="27" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Save%20to%20file</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

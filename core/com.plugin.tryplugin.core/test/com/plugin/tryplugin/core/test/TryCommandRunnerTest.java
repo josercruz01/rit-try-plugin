@@ -1,7 +1,5 @@
 package com.plugin.tryplugin.core.test;
 
-import static org.junit.Assert.*;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +31,8 @@ public class TryCommandRunnerTest {
 	public void testRun() {
 		// when run is invoked
 		commandRunner.run(config, project);
+		
+		mokitoooo
 	}
 
 }
