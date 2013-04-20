@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tryplugin
+Bundle-SymbolicName: com.plugin.tryplugin; singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.plugin.tryplugin.Activator
+Bundle-Vendor: PLUGIN
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.forms;bundle-version="3.5.200"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
