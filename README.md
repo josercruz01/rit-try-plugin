@@ -11,3 +11,5 @@ Eclipse Plugin to execute RIT's 'try' command from within eclipse itself
 
 ### Output window
 ![Layout 2](http://s24.postimg.org/f6kz8wvnp/try_plugin_output.png) 
+
+ECLIPSE PLUGIN for RIT - TRY
