@@ -2,6 +2,8 @@ package com.pluigin.tryplugin.core.app;
 
 import java.util.ArrayList;
 
+import com.pluigin.tryplugin.core.models.ITryCommandView;
+
 public interface ISSHSession {
 
 	String uploadFiles(String parentFolder, ArrayList<String> filenames);

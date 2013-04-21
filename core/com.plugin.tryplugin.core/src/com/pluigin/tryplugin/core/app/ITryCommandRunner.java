@@ -1,5 +1,6 @@
 package com.pluigin.tryplugin.core.app;
 
+import com.pluigin.tryplugin.core.models.ITryCommandView;
 import com.pluigin.tryplugin.core.models.ServerConfig;
 import com.pluigin.tryplugin.core.models.TryProject;
 

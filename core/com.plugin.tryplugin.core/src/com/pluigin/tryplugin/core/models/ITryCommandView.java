@@ -1,4 +1,4 @@
-package com.pluigin.tryplugin.core.app;
+package com.pluigin.tryplugin.core.models;
 import java.io.InputStream;
 
 public interface ITryCommandView {

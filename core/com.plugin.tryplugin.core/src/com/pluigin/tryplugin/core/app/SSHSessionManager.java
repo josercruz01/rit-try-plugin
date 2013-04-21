@@ -3,7 +3,9 @@ package com.pluigin.tryplugin.core.app;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.UserInfo;
+import com.pluigin.tryplugin.core.models.ITryCommandView;
 import com.pluigin.tryplugin.core.models.ServerConfig;
+import com.pluigin.tryplugin.core.models.UserInfoWrapper;
 
 public class SSHSessionManager implements ISSHSessionManager{
 

@@ -1,7 +1,6 @@
 package com.pluigin.tryplugin.core.app;
 
-import java.io.InputStream;
-
+import com.pluigin.tryplugin.core.models.ITryCommandView;
 import com.pluigin.tryplugin.core.models.ServerConfig;
 import com.pluigin.tryplugin.core.models.TryProject;
 
@@ -19,7 +18,7 @@ public class TryCommandRunner implements ITryCommandRunner {
 	}
 	
 	public TryCommandRunner(){
-		this(new SSHSessionManager(),new MockTryCommandGenerator(),new MockCommandBuilder());
+		this(new SSHSessionManager(),new MockTryCommandGenerator(),new CommandBuilder());
 	}
 	
 	@Override

@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import com.pluigin.tryplugin.core.app.ITryCommandView;
 import com.pluigin.tryplugin.core.app.TryCommandRunner;
+import com.pluigin.tryplugin.core.models.ITryCommandView;
 import com.pluigin.tryplugin.core.models.ServerConfig;
 import com.pluigin.tryplugin.core.models.TryProject;
 

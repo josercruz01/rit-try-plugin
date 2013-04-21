@@ -17,8 +17,8 @@ import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.pluigin.tryplugin.core.app.ISSHSession;
-import com.pluigin.tryplugin.core.app.ITryCommandView;
 import com.pluigin.tryplugin.core.app.SSHSession;
+import com.pluigin.tryplugin.core.models.ITryCommandView;
 
 public class SSHSessionTest {
 	ISSHSession session;

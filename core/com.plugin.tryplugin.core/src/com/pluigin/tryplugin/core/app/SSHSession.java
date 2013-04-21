@@ -1,6 +1,7 @@
 package com.pluigin.tryplugin.core.app;
 
 import com.pluigin.tryplugin.core.app.ISSHSession;
+import com.pluigin.tryplugin.core.models.ITryCommandView;
 
 import java.io.InputStream;
 import java.util.ArrayList;
