@@ -18,7 +18,7 @@ public class TryCommandRunner implements ITryCommandRunner {
 	}
 	
 	public TryCommandRunner(){
-		this(new SSHSessionManager(),new MockTryCommandGenerator(),new CommandBuilder());
+		this(new SSHSessionManager(),new TryCommandGenerator(),new CommandBuilder());
 	}
 	
 	@Override
