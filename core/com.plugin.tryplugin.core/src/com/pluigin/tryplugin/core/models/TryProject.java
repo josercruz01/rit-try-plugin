@@ -7,10 +7,11 @@ public class TryProject {
 	private String assignmentCode;
 	private ArrayList<String> filenames;
 	
-	public TryProject(String instructorAccount,String assignmentCode)
+	public TryProject(String instructorAccount,String assignmentCode,ArrayList<String> filenames)
 	{
 		this.instructorAccount = instructorAccount;
 		this.assignmentCode = assignmentCode;
+		this.filenames = filenames;
 	}
 	
 	public String getInstructorAccount() {
