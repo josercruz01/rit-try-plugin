@@ -59,7 +59,11 @@ public class TryCommandRunnerTest {
 		// Establish Context
 		InputStream inputStream = MockInputStream.create();
 		ISSHSession session = mock(ISSHSession.class);
-		when(sessionManager.createSession(config)).thenReturn(session);
+		try {
+			when(sessionManager.createSession(config)).thenReturn(session);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		when(session.uploadFiles("~",project.getFilenames())).thenReturn("blahFolderName");
 		
@@ -76,7 +80,7 @@ public class TryCommandRunnerTest {
 	}
 	
 	@Test
-	public void testRun_whenFailureToConnect() {
+	public void testRun_whenFailureToConnect() throws Exception {
 		// Establish Context
 		ISSHSession session = mock(ISSHSession.class);
 		when(sessionManager.createSession(config)).thenThrow(Exception.class);
@@ -90,7 +94,7 @@ public class TryCommandRunnerTest {
 	}
 	
 	@Test
-	public void testRun_whenFailureToUploadFile() {
+	public void testRun_whenFailureToUploadFile() throws Exception {
 		// Establish Context
 		ISSHSession session = mock(ISSHSession.class);
 		when(sessionManager.createSession(config)).thenReturn(session);
@@ -106,7 +110,7 @@ public class TryCommandRunnerTest {
 	}
 	
 	@Test
-	public void testRun_whenFailureToExecute() {
+	public void testRun_whenFailureToExecute() throws Exception {
 		// Establish Context
 		ISSHSession session = mock(ISSHSession.class);
 		when(sessionManager.createSession(config)).thenReturn(session);
