@@ -1,5 +1,7 @@
 package com.pluigin.tryplugin.core.app;
 
+import com.pluigin.tryplugin.core.app.ISSHSession;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -10,7 +12,6 @@ public class SSHSession implements ISSHSession {
 
 	public SSHSession(Session session){
 		this.session = session;
-		
 	}
 
 	@Override

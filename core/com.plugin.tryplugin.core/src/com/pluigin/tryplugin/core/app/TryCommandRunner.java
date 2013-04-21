@@ -17,6 +17,7 @@ public class TryCommandRunner implements ITryCommandRunner {
 	}
 	
 	public TryCommandRunner(){
+		this(new SSHSessionManager(),/*todo: missing*/null);
 	}
 	
 	@Override
