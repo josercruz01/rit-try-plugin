@@ -4,8 +4,8 @@ import java.io.InputStream;
 
 public interface ITryCommandView {
 
-	void onCommandExecuted(InputStream inputStream);
-
 	void onError(Exception e);
+
+	void onCommandExecuted(String result, int exitStatus);
 
 }

@@ -9,15 +9,17 @@ public class TryCommandRunner implements ITryCommandRunner {
 
 	private ISSHSessionManager sessionManager;
 	private ITryCommandGenerator tryCommandGenerator;
+	private ICommandBuilder commandBuilder;
 	private ITryCommandView view;
 
-	public TryCommandRunner(ISSHSessionManager sessionManager,ITryCommandGenerator tryCommandGenerator){
+	public TryCommandRunner(ISSHSessionManager sessionManager,ITryCommandGenerator tryCommandGenerator,ICommandBuilder commandBuilder){
 		this.sessionManager = sessionManager;
+		this.commandBuilder = commandBuilder;
 		this.tryCommandGenerator = tryCommandGenerator;
 	}
 	
 	public TryCommandRunner(){
-		this(new SSHSessionManager(),/*todo: missing*/null);
+		this(new SSHSessionManager(),/*todo: missing*/null,null);
 	}
 	
 	@Override
@@ -28,15 +30,14 @@ public class TryCommandRunner implements ITryCommandRunner {
 			session = sessionManager.createSession(config);
 			String remoteFolderName = session.uploadFiles("~",project.getFilenames());
 
-			InputStream inputStream =  session.execute(
+			String completeCommand = commandBuilder.buildFrom(
 					"cd " + remoteFolderName,
 					tryCommandGenerator.create(project),
 					"cd ..",
 					"rm -r " + remoteFolderName
 					);
-
-			view.onCommandExecuted(inputStream);
-
+			
+			session.execute(view,completeCommand); 
 		} catch(Exception e) {
 			view.onError(e);
 		} finally {
