@@ -1,4 +1,4 @@
-package com.pluigin.tryplugin.core;
+package com.pluigin.tryplugin.core.app;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -37,7 +37,7 @@ public class Main {
 
 
 		// ssh view handler
-		ITryCommandView view = new ITryCommandView() {
+		ITryCommandView ui = new ITryCommandView() {
 			@Override
 			public boolean promptYesNoRSAKeyFingerprint(String str) {
 				println(str);
@@ -52,7 +52,6 @@ public class Main {
 			@Override
 			public void onError(Exception e) {
 				e.printStackTrace();
-				println("");
 			}
 
 			@Override
@@ -73,7 +72,6 @@ public class Main {
 
 		// Try project settings
 		TryProject project = new TryProject("jrc","homework1",files);
-		runner.setView(view);
 		runner.run(config, project);
 
 		println("Running!!!");

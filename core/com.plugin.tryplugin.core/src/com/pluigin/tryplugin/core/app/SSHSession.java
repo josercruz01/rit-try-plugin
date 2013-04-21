@@ -23,7 +23,7 @@ public class SSHSession implements ISSHSession {
 	}
 
 	@Override
-	public InputStream execute(ITryCommandView view,String command) {
+	public void execute(ITryCommandView view,String command) {
 		Channel channel = null;
 		try{
 			channel=session.openChannel("exec");
@@ -54,14 +54,10 @@ public class SSHSession implements ISSHSession {
 		} finally{
 			if(channel!=null) channel.disconnect();
 		}
-
-
-		return null;
 	}
 
 	@Override
 	public void disconnect() {
 		session.disconnect();
 	}
-
 }

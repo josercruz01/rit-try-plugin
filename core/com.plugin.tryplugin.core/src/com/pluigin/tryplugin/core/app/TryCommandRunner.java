@@ -19,7 +19,7 @@ public class TryCommandRunner implements ITryCommandRunner {
 	}
 	
 	public TryCommandRunner(){
-		this(new SSHSessionManager(),/*todo: missing*/null,null);
+		this(new SSHSessionManager(),new MockTryCommandGenerator(),new MockCommandBuilder());
 	}
 	
 	@Override
@@ -27,7 +27,7 @@ public class TryCommandRunner implements ITryCommandRunner {
 		ISSHSession session = null;
 		
 		try{
-			session = sessionManager.createSession(config);
+			session = sessionManager.createSession(getView(),config);
 			String remoteFolderName = session.uploadFiles("~",project.getFilenames());
 
 			String completeCommand = commandBuilder.buildFrom(
@@ -37,9 +37,9 @@ public class TryCommandRunner implements ITryCommandRunner {
 					"rm -r " + remoteFolderName
 					);
 			
-			session.execute(view,completeCommand); 
+			session.execute(getView(),completeCommand); 
 		} catch(Exception e) {
-			view.onError(e);
+			getView().onError(e);
 		} finally {
 			if(session!=null) session.disconnect();
 		}
@@ -48,5 +48,12 @@ public class TryCommandRunner implements ITryCommandRunner {
 	public void setView(ITryCommandView view) {
 		this.view = view;
 	}
-
+	
+	public ITryCommandView getView(){
+		if(view == null) {
+			throw new IllegalArgumentException();
+		}
+		
+		return view;
+	}
 }

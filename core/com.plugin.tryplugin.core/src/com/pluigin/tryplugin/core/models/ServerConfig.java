@@ -4,11 +4,13 @@ public class ServerConfig {
 	private String host;
 	private String username;
 	private String password;
+	private int port;
 	
 	public ServerConfig(String host, String username, String password) {
 		this.host = host;
 		this.username = username;
 		this.password = password;
+		this.setPort(3000);
 	}
 	
 	public ServerConfig(){}
@@ -30,6 +32,14 @@ public class ServerConfig {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
 	}
 
 }
