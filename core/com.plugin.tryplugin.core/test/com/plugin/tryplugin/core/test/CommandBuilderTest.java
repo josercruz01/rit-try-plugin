@@ -42,7 +42,15 @@ public class CommandBuilderTest {
 		// because
 		String result = commandBuilder.buildFrom("ls","pwd","uname");
 		
-		assertEquals("Should return empty string",result,"ls;pwd;uname");
+		assertEquals("Should concat the input commands using semicolon",result,"ls;pwd;uname");
+	}
+	
+	@Test
+	public void testBuildNulllist() {
+		// because
+		String result = commandBuilder.buildFrom();
+		
+		assertEquals("Should return empty string",result,"");
 	}
 	
 }
