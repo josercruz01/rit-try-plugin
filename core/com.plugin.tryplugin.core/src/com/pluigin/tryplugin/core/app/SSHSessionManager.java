@@ -16,6 +16,8 @@ public class SSHSessionManager implements ISSHSessionManager{
 		session.setUserInfo(new UserInfoWrapper(view));
 		session.setPassword(config.getPassword());
 		session.connect(config.getPort());
-		return new SSHSession(session);
+		SSHSession sshSession =new SSHSession(session);
+		sshSession.setView(view);
+		return sshSession;
 	}
 }

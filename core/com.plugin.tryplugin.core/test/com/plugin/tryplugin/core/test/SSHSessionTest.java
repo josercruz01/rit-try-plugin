@@ -63,7 +63,7 @@ public class SSHSessionTest {
 		
 		
 		// when
-		session.execute(mockView,"pwd");
+		session.execute("pwd");
 		
 		//then
 		verify(mockChannel).setErrStream(System.err);
@@ -80,7 +80,7 @@ public class SSHSessionTest {
 		ITryCommandView mockView  = mock(ITryCommandView.class);
 		
 		// when
-		session.execute(mockView,"pwd");
+		session.execute("pwd");
 		
 		//then
 		verify(mockView).onError((Exception)any());

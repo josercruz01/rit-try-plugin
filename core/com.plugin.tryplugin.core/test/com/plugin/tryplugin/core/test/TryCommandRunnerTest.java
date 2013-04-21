@@ -11,6 +11,8 @@ import org.junit.Test;
 import org.mockito.ArgumentMatcher;
 import org.mockito.internal.matchers.VarargMatcher;
 
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.SftpException;
 import com.pluigin.tryplugin.core.app.ICommandBuilder;
 import com.pluigin.tryplugin.core.app.ISSHSession;
 import com.pluigin.tryplugin.core.app.ISSHSessionManager;
@@ -58,7 +60,7 @@ public class TryCommandRunnerTest {
 	}
 
 	@Test
-	public void testRun() {
+	public void testRun() throws IOException, SftpException, JSchException {
 		// Establish Context
 	
 		ISSHSession mockSession = mock(ISSHSession.class);
@@ -68,7 +70,7 @@ public class TryCommandRunnerTest {
 			e.printStackTrace();
 		}
 		
-		when(mockSession.uploadFiles("~",project.getFilenames())).thenReturn("blahFolderName");
+		when(mockSession.uploadFiles(project.getFilenames())).thenReturn("blahFolderName");
 		when(mockCommandBuilder.buildFrom((String)anyVararg())).thenReturn("pwd");
 		
 		// because
@@ -76,7 +78,7 @@ public class TryCommandRunnerTest {
 		
 		
 		// then
-		verify(mockSession).execute(mockView, "pwd");
+		verify(mockSession).execute( "pwd");
 		verify(mockSession).disconnect();
 		verify(mockView,never()).onError((Exception)any());
 	}
@@ -101,7 +103,7 @@ public class TryCommandRunnerTest {
 		ISSHSession session = mock(ISSHSession.class);
 		when(mockSessionManager.createSession(mockView,config)).thenReturn(session);
 		
-		when(session.uploadFiles("~",project.getFilenames())).thenThrow(Exception.class);
+		when(session.uploadFiles(project.getFilenames())).thenThrow(Exception.class);
 		
 		// because
 		commandRunner.run(config, project);

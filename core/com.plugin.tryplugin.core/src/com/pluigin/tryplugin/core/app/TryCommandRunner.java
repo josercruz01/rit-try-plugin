@@ -27,16 +27,16 @@ public class TryCommandRunner implements ITryCommandRunner {
 		
 		try{
 			session = sessionManager.createSession(getView(),config);
-			String remoteFolderName = session.uploadFiles("~",project.getFilenames());
+			String remoteFolderName = session.uploadFiles(project.getFilenames());
 
 			String completeCommand = commandBuilder.buildFrom(
 					"cd " + remoteFolderName,
 					tryCommandGenerator.create(project),
-					"cd ..",
-					"rm -r " + remoteFolderName
+					"cd .."//,
+					//"rm -r " + remoteFolderName
 					);
 			
-			session.execute(getView(),completeCommand); 
+			session.execute(completeCommand); 
 		} catch(Exception e) {
 			getView().onError(e);
 		} finally {

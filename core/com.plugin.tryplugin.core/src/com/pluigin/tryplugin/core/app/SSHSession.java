@@ -1,30 +1,54 @@
 package com.pluigin.tryplugin.core.app;
 
-import com.pluigin.tryplugin.core.app.ISSHSession;
-import com.pluigin.tryplugin.core.models.ITryCommandView;
-
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpException;
+import com.pluigin.tryplugin.core.models.ITryCommandView;
 
 public class SSHSession implements ISSHSession {
 	private Session session;
+	private ITryCommandView view;
 
 	public SSHSession(Session session){
 		this.session = session;
 	}
 
 	@Override
-	public String uploadFiles(String parentFolder, ArrayList<String> filenames) {
-		// TODO Auto-generated method stub
-		return null;
+	public String uploadFiles(ArrayList<String> filenames) throws SftpException, JSchException {
+		Channel channel =null;
+		String tmpFolder = "rit-try-plugin_" + TimeService.textTimeStamp();
+		try{
+
+			channel = session.openChannel("sftp");
+			channel.connect();
+
+			ChannelSftp csftp = (ChannelSftp) channel;
+			try{
+				csftp.mkdir(tmpFolder);
+			}catch(Exception e){}
+
+			for(String sourceFile: filenames){
+				String sourceFileName = sourceFile.substring(sourceFile.lastIndexOf("/")+1);
+				String destAbsolutePath =  tmpFolder + "/" + sourceFileName;
+				File file = new File(sourceFile); 
+				csftp.put(sourceFile, destAbsolutePath, (int)file.length());
+			}
+
+		}finally{
+			if(channel!=null)channel.disconnect();
+		}
+		return tmpFolder;
 	}
 
 	@Override
-	public void execute(ITryCommandView view,String command) {
+	public void execute(String command) {
 		Channel channel = null;
 		try{
 			channel=session.openChannel("exec");
@@ -46,12 +70,12 @@ public class SSHSession implements ISSHSession {
 					result += new String(tmp, 0, i);
 				}
 				if(channel.isClosed()){
-					view.onCommandExecuted(result,channel.getExitStatus());
+					getView().onCommandExecuted(result,channel.getExitStatus());
 					break;
 				}
 			}
 		}catch(Exception e){
-			view.onError(e);
+			getView().onError(e);
 		} finally{
 			if(channel!=null) channel.disconnect();
 		}
@@ -60,5 +84,14 @@ public class SSHSession implements ISSHSession {
 	@Override
 	public void disconnect() {
 		session.disconnect();
+	}
+
+	public ITryCommandView getView() {
+		if(view == null) throw new IllegalArgumentException("View attribute can not be null");
+		return view;
+	}
+
+	public void setView(ITryCommandView view) {
+		this.view = view;
 	}
 }

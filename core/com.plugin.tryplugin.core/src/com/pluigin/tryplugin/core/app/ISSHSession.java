@@ -2,13 +2,14 @@ package com.pluigin.tryplugin.core.app;
 
 import java.util.ArrayList;
 
-import com.pluigin.tryplugin.core.models.ITryCommandView;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.SftpException;
 
 public interface ISSHSession {
 
-	String uploadFiles(String parentFolder, ArrayList<String> filenames);
+	String uploadFiles(ArrayList<String> filenames) throws SftpException, JSchException;
 
-	void execute(ITryCommandView view, String command);
+	void execute(String command);
 
 	void disconnect();
 
