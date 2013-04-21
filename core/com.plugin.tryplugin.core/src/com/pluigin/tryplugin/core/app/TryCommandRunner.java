@@ -32,8 +32,8 @@ public class TryCommandRunner implements ITryCommandRunner {
 			String completeCommand = commandBuilder.buildFrom(
 					"cd " + remoteFolderName,
 					tryCommandGenerator.create(project),
-					"cd .."//,
-					//"rm -r " + remoteFolderName
+					"cd ..",
+					"rm -r " + remoteFolderName
 					);
 			
 			session.execute(completeCommand); 

@@ -35,9 +35,8 @@ public class SSHSession implements ISSHSession {
 			}catch(Exception e){}
 
 			for(String sourceFile: filenames){
-				String sourceFileName = sourceFile.substring(sourceFile.lastIndexOf("/")+1);
-				String destAbsolutePath =  tmpFolder + "/" + sourceFileName;
 				File file = new File(sourceFile); 
+				String destAbsolutePath =  tmpFolder + "/" + file.getName();
 				csftp.put(sourceFile, destAbsolutePath, (int)file.length());
 			}
 

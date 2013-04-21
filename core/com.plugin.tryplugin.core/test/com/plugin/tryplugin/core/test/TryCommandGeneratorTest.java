@@ -28,8 +28,8 @@ public class TryCommandGeneratorTest {
 	public void test() {
 		// establish context
 		ArrayList<String> filenames = new ArrayList<String>();
-		filenames.add("main.h");
-		filenames.add("main.cpp") ;
+		filenames.add("/parent/parent/main.h");
+		filenames.add("/parent/main.cpp") ;
 		TryProject project = new TryProject("instructor","homework",filenames);
 		
 		// because

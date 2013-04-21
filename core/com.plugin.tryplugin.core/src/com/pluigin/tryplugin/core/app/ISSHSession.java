@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
+import com.pluigin.tryplugin.core.models.ITryCommandView;
 
 public interface ISSHSession {
 
@@ -13,4 +14,5 @@ public interface ISSHSession {
 
 	void disconnect();
 
+	void setView(ITryCommandView view);
 }

@@ -24,12 +24,16 @@ public class SSHSessionTest {
 	ISSHSession session;
 
 	Session mockSession;
+
+	private ITryCommandView mockView;
 	@Before
 	public void setUp() throws Exception {
 		mockSession = mock(Session.class);
 		
 		
+		mockView  = mock(ITryCommandView.class);
 		session = new SSHSession(mockSession);
+		session.setView(mockView);
 	}
 
 	@After
@@ -56,11 +60,9 @@ public class SSHSessionTest {
 		
 		when(mockSession.openChannel("exec")).thenReturn(mockChannel);
 		when(mockChannel.getInputStream()).thenReturn(mockInputStream);
-		ITryCommandView mockView  = mock(ITryCommandView.class);
 		
 		when(mockChannel.isClosed()).thenReturn(true);
 		when(mockChannel.getExitStatus()).thenReturn(200);
-		
 		
 		// when
 		session.execute("pwd");
@@ -71,21 +73,6 @@ public class SSHSessionTest {
 		verify(mockChannel).connect();
 		verify(mockChannel).disconnect();
 	}
-	
-	@Test
-	public void testExecute_whenOpenChannelFails() throws JSchException, IOException{
-		// establish context
-		ChannelExec mockChannel = mock(ChannelExec.class);
-		when(mockSession.openChannel("exec")).thenThrow(Exception.class);
-		ITryCommandView mockView  = mock(ITryCommandView.class);
-		
-		// when
-		session.execute("pwd");
-		
-		//then
-		verify(mockView).onError((Exception)any());
-	}
-	
 	
 	public static class MockInputStream {
 		public static InputStream create(String text) {

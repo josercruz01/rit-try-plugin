@@ -29,8 +29,11 @@ public class Main {
 		TryCommandRunner runner = new TryCommandRunner();
 
 		// get server auth
-		String host = "localhost";
-		String username = "raymi";
+		println("provide host");
+		String host = in.readLine();
+		
+		println("provide username");
+		String username = in.readLine();
 
 		println("provide password:");
 		String password = in.readLine();
@@ -41,14 +44,12 @@ public class Main {
 			@Override
 			public boolean promptYesNoRSAKeyFingerprint(String str) {
 				println(str);
-				/*
 				try {
 					return in.readLine().equals("yes");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				*/
-				return true; // sample code
+				return false; // sample code
 			}
 
 			@Override
@@ -70,11 +71,15 @@ public class Main {
 
 		// files to upload
 		ArrayList<String> files = new ArrayList<String>();
-		files.add("/Users/raymi/test/main.cpp");
-		files.add("/Users/raymi/test/main.h");
+		
+		println("full path to Foo.java");
+		files.add(in.readLine());
+		
+		println("full path to Bar.java");
+		files.add(in.readLine());
 
 		// Try project settings
-		TryProject project = new TryProject("jrc","homework1",files);
+		TryProject project = new TryProject("jeh-grd","demo",files);
 		runner.setView(view);
 		runner.run(config, project);
 
