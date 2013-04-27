@@ -1,4 +1,4 @@
-package com.pluigin.tryplugin.core.app;
+package com.plugin.tryplugin.core.app;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;

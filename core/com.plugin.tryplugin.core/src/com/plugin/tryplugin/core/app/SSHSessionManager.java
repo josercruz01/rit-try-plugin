@@ -1,11 +1,10 @@
-package com.pluigin.tryplugin.core.app;
+package com.plugin.tryplugin.core.app;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
-import com.jcraft.jsch.UserInfo;
-import com.pluigin.tryplugin.core.models.ITryCommandView;
-import com.pluigin.tryplugin.core.models.ServerConfig;
-import com.pluigin.tryplugin.core.models.UserInfoWrapper;
+import com.plugin.tryplugin.core.models.ITryCommandView;
+import com.plugin.tryplugin.core.models.ServerConfig;
+import com.plugin.tryplugin.core.models.UserInfoWrapper;
 
 public class SSHSessionManager implements ISSHSessionManager{
 

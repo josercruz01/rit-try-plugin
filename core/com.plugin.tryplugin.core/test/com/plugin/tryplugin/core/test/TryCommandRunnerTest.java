@@ -13,15 +13,16 @@ import org.mockito.internal.matchers.VarargMatcher;
 
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
-import com.pluigin.tryplugin.core.app.ICommandBuilder;
-import com.pluigin.tryplugin.core.app.ISSHSession;
-import com.pluigin.tryplugin.core.app.ISSHSessionManager;
-import com.pluigin.tryplugin.core.app.ITryCommandGenerator;
-import com.pluigin.tryplugin.core.app.ITryCommandRunner;
-import com.pluigin.tryplugin.core.app.TryCommandRunner;
-import com.pluigin.tryplugin.core.models.ITryCommandView;
-import com.pluigin.tryplugin.core.models.ServerConfig;
-import com.pluigin.tryplugin.core.models.TryProject;
+import com.plugin.tryplugin.core.app.ICommandBuilder;
+import com.plugin.tryplugin.core.app.ISSHSession;
+import com.plugin.tryplugin.core.app.ISSHSessionManager;
+import com.plugin.tryplugin.core.app.ITryCommandGenerator;
+import com.plugin.tryplugin.core.app.ITryCommandRunner;
+import com.plugin.tryplugin.core.app.TryCommandRunner;
+import com.plugin.tryplugin.core.models.ITryCommandView;
+import com.plugin.tryplugin.core.models.ServerConfig;
+import com.plugin.tryplugin.core.models.TryProject;
+
 import static org.mockito.Mockito.*;
 
 public class TryCommandRunnerTest {

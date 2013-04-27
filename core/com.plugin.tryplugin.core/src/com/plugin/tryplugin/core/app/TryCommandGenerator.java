@@ -1,8 +1,8 @@
-package com.pluigin.tryplugin.core.app;
+package com.plugin.tryplugin.core.app;
 
 import java.io.File;
 
-import com.pluigin.tryplugin.core.models.TryProject;
+import com.plugin.tryplugin.core.models.TryProject;
 
 public class TryCommandGenerator implements ITryCommandGenerator {
 

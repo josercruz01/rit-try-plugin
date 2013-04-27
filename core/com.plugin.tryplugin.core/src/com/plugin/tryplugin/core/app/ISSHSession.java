@@ -1,10 +1,10 @@
-package com.pluigin.tryplugin.core.app;
+package com.plugin.tryplugin.core.app;
 
 import java.util.ArrayList;
 
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
-import com.pluigin.tryplugin.core.models.ITryCommandView;
+import com.plugin.tryplugin.core.models.ITryCommandView;
 
 public interface ISSHSession {
 

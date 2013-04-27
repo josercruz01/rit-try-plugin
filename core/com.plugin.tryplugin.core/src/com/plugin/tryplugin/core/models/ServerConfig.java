@@ -1,4 +1,4 @@
-package com.pluigin.tryplugin.core.models;
+package com.plugin.tryplugin.core.models;
 
 public class ServerConfig {
 	private String host;

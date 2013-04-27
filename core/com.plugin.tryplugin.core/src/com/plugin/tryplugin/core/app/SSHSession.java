@@ -1,4 +1,4 @@
-package com.pluigin.tryplugin.core.app;
+package com.plugin.tryplugin.core.app;
 
 import java.io.File;
 import java.io.InputStream;
@@ -10,7 +10,7 @@ import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
-import com.pluigin.tryplugin.core.models.ITryCommandView;
+import com.plugin.tryplugin.core.models.ITryCommandView;
 
 public class SSHSession implements ISSHSession {
 	private Session session;

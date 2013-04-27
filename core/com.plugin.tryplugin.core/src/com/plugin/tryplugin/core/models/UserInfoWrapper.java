@@ -1,4 +1,4 @@
-package com.pluigin.tryplugin.core.models;
+package com.plugin.tryplugin.core.models;
 
 import com.jcraft.jsch.UIKeyboardInteractive;
 import com.jcraft.jsch.UserInfo;

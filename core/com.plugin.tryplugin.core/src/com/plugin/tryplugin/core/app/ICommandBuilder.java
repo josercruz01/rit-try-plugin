@@ -1,4 +1,4 @@
-package com.pluigin.tryplugin.core.app;
+package com.plugin.tryplugin.core.app;
 
 public interface ICommandBuilder {
 	String buildFrom(String...commands);

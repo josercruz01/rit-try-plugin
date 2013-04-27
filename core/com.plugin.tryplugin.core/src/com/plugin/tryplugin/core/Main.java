@@ -1,13 +1,13 @@
-package com.pluigin.tryplugin.core;
+package com.plugin.tryplugin.core;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import com.pluigin.tryplugin.core.app.TryCommandRunner;
-import com.pluigin.tryplugin.core.models.ITryCommandView;
-import com.pluigin.tryplugin.core.models.ServerConfig;
-import com.pluigin.tryplugin.core.models.TryProject;
+import com.plugin.tryplugin.core.app.TryCommandRunner;
+import com.plugin.tryplugin.core.models.ITryCommandView;
+import com.plugin.tryplugin.core.models.ServerConfig;
+import com.plugin.tryplugin.core.models.TryProject;
 
 public class Main {
 	/**

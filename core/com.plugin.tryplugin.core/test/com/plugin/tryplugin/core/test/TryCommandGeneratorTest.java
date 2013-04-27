@@ -8,8 +8,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.pluigin.tryplugin.core.app.TryCommandGenerator;
-import com.pluigin.tryplugin.core.models.TryProject;
+import com.plugin.tryplugin.core.app.TryCommandGenerator;
+import com.plugin.tryplugin.core.models.TryProject;
 
 public class TryCommandGeneratorTest {
 

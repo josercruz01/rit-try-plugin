@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.pluigin.tryplugin.core.app.CommandBuilder;
+import com.plugin.tryplugin.core.app.CommandBuilder;
 
 public class CommandBuilderTest {
 

@@ -1,8 +1,8 @@
-package com.pluigin.tryplugin.core.app;
+package com.plugin.tryplugin.core.app;
 
-import com.pluigin.tryplugin.core.models.ITryCommandView;
-import com.pluigin.tryplugin.core.models.ServerConfig;
-import com.pluigin.tryplugin.core.models.TryProject;
+import com.plugin.tryplugin.core.models.ITryCommandView;
+import com.plugin.tryplugin.core.models.ServerConfig;
+import com.plugin.tryplugin.core.models.TryProject;
 
 public class TryCommandRunner implements ITryCommandRunner {
 
