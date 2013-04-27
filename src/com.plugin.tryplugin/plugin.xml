@@ -5,7 +5,7 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            name="Sample Category"
+            name="Try Plugins"
             id="com.plugin.tryplugin">
       </category>
       <view
@@ -14,6 +14,13 @@
             category="com.plugin.tryplugin"
             class="com.plugin.tryplugin.views.SampleView"
             id="com.plugin.tryplugin.views.SampleView">
+      </view>
+      <view
+            name="try plugin main view"
+            icon="icons/rit.jpg"
+            category="com.plugin.tryplugin"
+            class="com.plugin.tryplugin.views.TryPluginMainView"
+            id="com.plugin.tryplugin.views.TryPluginMainView">
       </view>
    </extension>
    <extension
@@ -24,7 +31,7 @@
                ratio="0.5"
                relative="org.eclipse.ui.views.ProblemView"
                relationship="right"
-               id="com.plugin.tryplugin.views.SampleView">
+               id="com.plugin.tryplugin.views.TryPluginMainView">
          </view>
       </perspectiveExtension>
    </extension>
