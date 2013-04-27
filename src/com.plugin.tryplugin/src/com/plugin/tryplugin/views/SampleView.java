@@ -20,8 +20,10 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.part.*;
 	
 import org.eclipse.jface.viewers.*;
+import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -80,7 +82,7 @@ public class SampleView extends ViewPart {
 	private Action doubleClickAction2;
 	
 	private TableViewer table;
-	private ArrayList<String> tryElement = new ArrayList<String>();
+	private ArrayList<FileModel> tryElement = new ArrayList<FileModel>();
 	
 	private String tryStatus="";
 	/*
@@ -149,33 +151,14 @@ public class SampleView extends ViewPart {
 		public void dispose() {
 		}
 		public Object[] getElements(Object parent) {
-			return (File[]) parent;
-			/*
-			if (parent.equals(getViewSite())) {
-				if (invisibleRoot==null) initialize();
-				return getChildren(invisibleRoot);
-			}
-			return getChildren(parent);
-			*/
+			return (File[]) parent;			
 		}
 		public Object getParent(Object child) {
-			return ((File) child).getParentFile();
-			/*
-			if (child instanceof TreeObject) {
-				return ((TreeObject)child).getParent();
-			}
-			return null;
-			*/
+			return ((File) child).getParentFile();			
 		}
 		public Object [] getChildren(Object parent) {
 			File file = (File)parent;
-			return file.listFiles();
-			/*
-			if (parent instanceof TreeParent) {
-				return ((TreeParent)parent).getChildren();
-			}
-			return new Object[0];
-			*/
+			return file.listFiles();			
 		}
 		public boolean hasChildren(Object parent) {
 			File file = (File) parent;
@@ -183,33 +166,6 @@ public class SampleView extends ViewPart {
 				return true;
 			return false;
 		}
-/*
- * We will set up a dummy model to initialize tree heararchy.
- * In a real code, you will connect to a real model and
- * expose its hierarchy.
- */
-		/*
-		private void initialize() {
-			TreeObject to1 = new TreeObject("Leaf 1");
-			TreeObject to2 = new TreeObject("Leaf 2");
-			TreeObject to3 = new TreeObject("Leaf 3");
-			TreeParent p1 = new TreeParent("Parent 1");
-			p1.addChild(to1);
-			p1.addChild(to2);
-			p1.addChild(to3);
-			
-			TreeObject to4 = new TreeObject("Leaf 4");
-			TreeParent p2 = new TreeParent("Parent 2");
-			p2.addChild(to4);
-			
-			TreeParent root = new TreeParent("Root");
-			root.addChild(p1);
-			root.addChild(p2);
-			
-			invisibleRoot = new TreeParent("");
-			invisibleRoot.addChild(root);
-		}
-		*/
 	}
 	class ViewLabelProvider extends LabelProvider {
 
@@ -237,12 +193,7 @@ public class SampleView extends ViewPart {
 
 	/**
 	 * The constructor.
-	 */
-	/*
-	public SampleView() {
-	}
-	*/
-	
+	 */		
 
 	/**
 	 * This is a callback that will allow us
@@ -357,21 +308,49 @@ public class SampleView extends ViewPart {
 	    ArrayContentProvider tmp =new ArrayContentProvider(); 
 	    table.setContentProvider(tmp);
 	    
-	    TableViewerColumn viewerColumn = new TableViewerColumn(table, SWT.NONE);
+	    TableViewerColumn viewerColumn = new TableViewerColumn(table, SWT.RIGHT);
+	    
+	    
 	    
 	    viewerColumn.getColumn().setWidth(400);
 	    
-	    viewerColumn.setLabelProvider(new ColumnLabelProvider() {
+	    
+	    
+	    viewerColumn.setLabelProvider(new ColumnLabelProvider () {
 	      @Override
 	      public String getText(Object element) {
 	        return element.toString();
-	      };
-
+	      };	     	      
+	        
 	      public Image getImage(Object element) {
 	        return PlatformUI.getWorkbench().getSharedImages()
 	            .getImage(ISharedImages.IMG_OBJ_FILE);
 	      };
+	      
 	    });
+	    
+	    /*
+	    viewerColumn.setLabelProvider(new StyledCellLabelProvider() {
+	    	@Override
+	    	  public void update(ViewerCell cell) {
+	    	    StyledString text = new StyledString();
+	    	    
+	    	    StyleRange myStyledRange = new StyleRange(17, 2, null, Display
+	    	      .getCurrent().getSystemColor(SWT.COLOR_YELLOW));
+	    	    
+	    	    String value = (String)cell.getElement();
+	    	    text.append(value, StyledString.DECORATIONS_STYLER);	    	    
+	    	    
+	    	    cell.setText(text.toString());
+
+	    	    StyleRange[] range = { myStyledRange };
+	    	    cell.setStyleRanges(range);
+	    	    
+	    	    super.update(cell);
+	    	  };
+	  	      
+	    	});
+	    */
 	    
 	    makeActions2();
 		hookContextMenu2();
@@ -411,11 +390,12 @@ public class SampleView extends ViewPart {
 	    textUser.setTextLimit(10);
 	    textUser.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 	    
-	    Label labelPassword = new Label(form.getBody(), SWT.NULL);
+	    Label labelPassword = new Label(form.getBody(), SWT.NULL);	    
 	    labelPassword.setText("Password:");	        
 	     
 	    Text textPassword = new Text(form.getBody(), SWT.BORDER);
 	    textPassword.setTextLimit(10);
+	    textPassword.setEchoChar('*');
 	    textPassword.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 	    
 	    Label labelInstructor = new Label(form.getBody(), SWT.NULL);
@@ -572,7 +552,7 @@ public class SampleView extends ViewPart {
 					//showMessage("Trying to upload this file: "+obj.toString());
 					if(!tryElement.contains(obj.toString()))
 					{	
-						tryElement.add(obj.toString());						
+						tryElement.add(new FileModel(obj.toString()));						
 						table.setInput(tryElement);
 					}
 				}
@@ -598,9 +578,9 @@ public class SampleView extends ViewPart {
 				if(!tmp.isDirectory())
 				{	
 					//showMessage("Trying to upload this file: "+obj.toString());
-					if(tryElement.contains(obj.toString()))
+					if(tryElement.contains(new FileModel(obj.toString())))
 					{	
-						tryElement.remove(obj.toString());						
+						tryElement.remove( new FileModel( obj.toString()));						
 						table.setInput(tryElement);
 					}
 				}
@@ -622,9 +602,9 @@ public class SampleView extends ViewPart {
 				if(!tmp.isDirectory())
 					{
 						//showMessage("Trying to upload "+obj.toString());
-						if(!tryElement.contains(obj.toString()))
+						if(!tryElement.contains(new FileModel(obj.toString())))
 						{	
-							tryElement.add(obj.toString());						
+							tryElement.add(new FileModel(obj.toString()));						
 							table.setInput(tryElement);
 						}
 					}
@@ -636,12 +616,12 @@ public class SampleView extends ViewPart {
 				
 				ISelection selection = table.getSelection();
 				Object obj = ((IStructuredSelection)selection).getFirstElement();
-				String tmp = (String)obj;				
+				FileModel tmp = (FileModel)obj;				
 								
 				//showMessage("Trying to upload "+obj.toString());
-				if(tryElement.contains(tmp.toString()))
+				if(tryElement.contains(tmp))
 				{	
-					tryElement.remove(tmp.toString());						
+					tryElement.remove( tmp);						
 					table.setInput(tryElement);
 				}
 				
@@ -686,5 +666,29 @@ public class SampleView extends ViewPart {
 	 */
 	public void setFocus() {
 		viewer.getControl().setFocus();
+	}
+	
+	public class FileModel
+	{		
+		@Override
+		public boolean equals(Object obj) {
+			FileModel tmp2 = (FileModel) obj;
+			//
+			//return true;
+			return this.fullPath.equals(tmp2.fullPath);
+		}
+
+		String fullPath;
+		
+		public FileModel(String name)
+		{
+			this.fullPath = name;
+		}
+		public String toString()
+		{
+			File tmp = new File(this.fullPath);			
+			return ".. "+tmp.getName();
+		}
+		
 	}
 }
