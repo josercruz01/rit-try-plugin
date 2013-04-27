@@ -20,6 +20,8 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.part.*;
 	
 import org.eclipse.jface.viewers.*;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -236,8 +238,11 @@ public class SampleView extends ViewPart {
 	/**
 	 * The constructor.
 	 */
+	/*
 	public SampleView() {
 	}
+	*/
+	
 
 	/**
 	 * This is a callback that will allow us
@@ -258,10 +263,12 @@ public class SampleView extends ViewPart {
 	    section2.setText("Files Local Machine"); //$NON-NLS-1$
 	    section2.setDescription("These files are going to be included in List above");
 	    
+	    
 	    Composite browseLocal = toolkit.createComposite(section2, SWT.WRAP);
 	    
-    	viewer = new TreeViewer(browseLocal, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 	    
+    	viewer = new TreeViewer(browseLocal, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+    	 viewer.setAutoExpandLevel(2);
     	GridLayout layout2 = new GridLayout();
 	    layout2.numColumns = 1;
 	    layout2.marginWidth = 2;
@@ -271,6 +278,7 @@ public class SampleView extends ViewPart {
 	    browseLocal.setLayout(layout2);
 	    
 		drillDownAdapter = new DrillDownAdapter(viewer);
+		
 		
 		viewer.setContentProvider(new ViewContentProvider());
 		
@@ -314,7 +322,7 @@ public class SampleView extends ViewPart {
 	    // Composite for storing the data
 	    Composite client = toolkit.createComposite(section, SWT.WRAP);
 	    layout = new GridLayout();
-	    layout.numColumns = 2;
+	    layout.numColumns = 1;
 	    layout.marginWidth = 2;
 	    layout.marginHeight = 2;
 	    
@@ -329,7 +337,14 @@ public class SampleView extends ViewPart {
 	    toolkit.paintBordersFor(client);
 	    
 	    Button b = toolkit.createButton(client, "Run Try Command", SWT.PUSH); //$NON-NLS-1$
-	    
+	    b.addSelectionListener(new SelectionAdapter() {	    	
+	        @Override
+	        public void widgetSelected(SelectionEvent e) {
+	        	
+	            // Handle the selection event
+	        	showMessage(" listener ");
+	        }
+	    });
 	    gd = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
 	    b.setLayoutData(gd);
 	    section.setClient(client);
@@ -343,7 +358,9 @@ public class SampleView extends ViewPart {
 	    table.setContentProvider(tmp);
 	    
 	    TableViewerColumn viewerColumn = new TableViewerColumn(table, SWT.NONE);
-	    viewerColumn.getColumn().setWidth(100);
+	    
+	    viewerColumn.getColumn().setWidth(400);
+	    
 	    viewerColumn.setLabelProvider(new ColumnLabelProvider() {
 	      @Override
 	      public String getText(Object element) {

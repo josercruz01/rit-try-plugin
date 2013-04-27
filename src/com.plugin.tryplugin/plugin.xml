@@ -9,8 +9,8 @@
             id="com.plugin.tryplugin">
       </category>
       <view
-            name="Sample View"
-            icon="icons/sample.gif"
+            name="try plugin"
+            icon="icons/rit.jpg"
             category="com.plugin.tryplugin"
             class="com.plugin.tryplugin.views.SampleView"
             id="com.plugin.tryplugin.views.SampleView">
