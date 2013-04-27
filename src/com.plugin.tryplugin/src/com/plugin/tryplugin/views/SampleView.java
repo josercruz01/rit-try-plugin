@@ -20,6 +20,8 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.part.*;
 	
 import org.eclipse.jface.viewers.*;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -238,6 +240,7 @@ public class SampleView extends ViewPart {
 	/**
 	 * The constructor.
 	 */
+	
 	public SampleView() {
 		ITryCommandView view = new ITryCommandView() {
 			
@@ -260,6 +263,8 @@ public class SampleView extends ViewPart {
 			}
 		};
 	}
+	
+	
 
 	/**
 	 * This is a callback that will allow us
@@ -351,7 +356,14 @@ public class SampleView extends ViewPart {
 	    toolkit.paintBordersFor(client);
 	    
 	    Button b = toolkit.createButton(client, "Run Try Command", SWT.PUSH); //$NON-NLS-1$
-	    
+	    b.addSelectionListener(new SelectionAdapter() {	    	
+	        @Override
+	        public void widgetSelected(SelectionEvent e) {
+	        	
+	            // Handle the selection event
+	        	showMessage(" listener ");
+	        }
+	    });
 	    gd = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
 	    b.setLayoutData(gd);
 	    section.setClient(client);
