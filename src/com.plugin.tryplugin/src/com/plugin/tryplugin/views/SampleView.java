@@ -42,6 +42,8 @@ import javax.swing.text.PasswordView;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 
+import com.plugin.tryplugin.core.models.ITryCommandView;
+
 /**
  * This sample class demonstrates how to plug-in a new
  * workbench view. The view shows data obtained from the
@@ -237,6 +239,26 @@ public class SampleView extends ViewPart {
 	 * The constructor.
 	 */
 	public SampleView() {
+		ITryCommandView view = new ITryCommandView() {
+			
+			@Override
+			public boolean promptYesNoRSAKeyFingerprint(String str) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+			
+			@Override
+			public void onError(Exception e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onCommandExecuted(String result, int exitStatus) {
+				// TODO Auto-generated method stub
+				
+			}
+		};
 	}
 
 	/**

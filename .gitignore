@@ -1,3 +1,13 @@
-*.class
-bin
+# Mac files
 .DS_Store
+
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
