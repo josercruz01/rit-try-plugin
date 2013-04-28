@@ -2,7 +2,7 @@ rit-try-plugin
 ==============
 
 Eclipse Plugin to execute RIT's 'try' command from within eclipse itself
-
+#### for more information about the try command, visit this link: http://www.cs.rit.edu/~csx/Misc/try.html
 ==============
 
 ## Proposed Windows Layout
