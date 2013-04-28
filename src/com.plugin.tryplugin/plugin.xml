@@ -9,19 +9,20 @@
             id="com.plugin.tryplugin">
       </category>
       <view
-            name="try plugin"
-            icon="icons/rit.jpg"
-            category="com.plugin.tryplugin"
-            class="com.plugin.tryplugin.views.SampleView"
-            id="com.plugin.tryplugin.views.SampleView">
-      </view>
-      <view
             name="try plugin main view"
             icon="icons/rit.jpg"
             category="com.plugin.tryplugin"
             class="com.plugin.tryplugin.views.TryPluginMainView"
             id="com.plugin.tryplugin.views.TryPluginMainView">
       </view>
+      <view
+            name="try plugin"
+            icon="icons/rit.jpg"
+            category="com.plugin.tryplugin"
+            class="com.plugin.tryplugin.views.SampleView"
+            id="com.plugin.tryplugin.views.SampleView">
+      </view>
+
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
