@@ -239,6 +239,7 @@ public class SampleView extends ViewPart {
 	    
 	    /*Section 2*/
 	    // Lets make a layout for the first section of the screen
+		
 	    GridLayout layout = new GridLayout();
 	    layout.numColumns = 1;
 	    layout.marginWidth = 2;
@@ -253,6 +254,7 @@ public class SampleView extends ViewPart {
 	    // Composite for storing the data
 	    
 	    Composite client = toolkit.createComposite(section, SWT.WRAP);
+	    
 	    layout = new GridLayout();
 	    layout.numColumns = 1;
 	    layout.marginWidth = 2;
@@ -331,52 +333,50 @@ public class SampleView extends ViewPart {
 			
 	    form = toolkit.createScrolledForm(parent);
 	    form.setText("Configure the Connection to the Server");
-	    GridLayout layout3 = new GridLayout();
-	    form.getBody().setLayout(layout3);
-
-
-	    layout3.numColumns = 2;
-	    GridData gd3 = new GridData();
-	    gd3.horizontalSpan = 2;
 	    
+	    form.setMinWidth(400);
+	    	    
 	    
 	    Label lblRemoteHost = new Label(form.getBody(), SWT.NONE);
 		lblRemoteHost.setBounds(10, 14, 102, 25);
 		lblRemoteHost.setText("Remote host:");
-		
-		
-		
-		Label lblUsername = new Label(form.getBody(), SWT.NONE);
-		lblUsername.setText("Username:");
-		lblUsername.setBounds(10, 42, 102, 25);
-		
-		passwordText = new Text(form.getBody(), SWT.BORDER);
-		passwordText.setEchoChar('*');
-		passwordText.setBounds(158, 68, 172, 25);
-		
-		usernameText = new Text(form.getBody(), SWT.BORDER);
-		usernameText.setBounds(158, 40, 172, 25);
-		
-		text = new Text(form.getBody(), SWT.BORDER);
+
+		text = new Text(form.getBody(), SWT.BORDER);		
 		text.setBounds(158, 10, 172, 25);
 		
 		Label lblPassword = new Label(form.getBody(), SWT.NONE);
 		lblPassword.setText("Password:");
 		lblPassword.setBounds(10, 70, 102, 25);
 		
+		passwordText = new Text(form.getBody(), SWT.BORDER);
+		passwordText.setEchoChar('*');
+		passwordText.setBounds(158, 68, 172, 25);
+		
+		
+		Label lblUsername = new Label(form.getBody(), SWT.NONE);
+		lblUsername.setText("Username:");
+		lblUsername.setBounds(10, 42, 102, 25);
+		
+		
+		usernameText = new Text(form.getBody(), SWT.BORDER);
+		usernameText.setBounds(158, 40, 172, 25);
+		
+		
 		Label lblInstructorAccount = new Label(form.getBody(), SWT.NONE);
 		lblInstructorAccount.setText("Instructor Account:");
 		lblInstructorAccount.setBounds(10, 98, 143, 25);
 		
-		assignmentCodeText = new Text(form.getBody(), SWT.BORDER);
-		assignmentCodeText.setBounds(158, 126, 172, 25);
+		instructorAccountText = new Text(form.getBody(), SWT.BORDER);
+		instructorAccountText.setBounds(158, 97, 172, 25);
 		
 		Label lblAssignmentCode = new Label(form.getBody(), SWT.NONE);
 		lblAssignmentCode.setText("Assignment code:");
 		lblAssignmentCode.setBounds(10, 126, 143, 25);
 		
-		instructorAccountText = new Text(form.getBody(), SWT.BORDER);
-		instructorAccountText.setBounds(158, 97, 172, 25);
+		assignmentCodeText = new Text(form.getBody(), SWT.BORDER);
+		assignmentCodeText.setBounds(158, 126, 172, 25);
+		
+		
 		
 		Button btnRun = new Button(form.getBody(), SWT.NONE);
 		btnRun.addSelectionListener(new SelectionAdapter() {
@@ -394,14 +394,11 @@ public class SampleView extends ViewPart {
 		
 		
 		// This is the Text field for the OUTPUT.
-		outputTry = new Text(form.getBody(), SWT.BORDER);
+		outputTry = new Text(form.getBody(),  SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);		
+		outputTry.setEditable(false);
 		outputTry.setBounds(10, 250, 370, 300);
 		
-		Label lblTryProjectConfiguration = new Label(form.getBody(), SWT.NONE);
-		FormData fd_lblTryProjectConfiguration = new FormData();	
-		fd_lblTryProjectConfiguration.left = new FormAttachment(0, 10);
-		lblTryProjectConfiguration.setLayoutData(fd_lblTryProjectConfiguration);
-		lblTryProjectConfiguration.setText("Try project configuration");
+		
 		
 	    /*End Section 3*/
 	    
