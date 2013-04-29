@@ -34,9 +34,9 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.DrillDownAdapter;
 import org.eclipse.ui.part.ViewPart;
 
-import com.plugin.tryplugin.views.SampleView.FileModel;
-import com.plugin.tryplugin.views.SampleView.TreeObject;
-import com.plugin.tryplugin.views.SampleView.TreeParent;
+import com.plugin.tryplugin.views.MainView.FileModel;
+import com.plugin.tryplugin.views.MainView.TreeObject;
+import com.plugin.tryplugin.views.MainView.TreeParent;
 
 @SuppressWarnings(value = { "all" })
 public class TryPluginMainView extends ViewPart {

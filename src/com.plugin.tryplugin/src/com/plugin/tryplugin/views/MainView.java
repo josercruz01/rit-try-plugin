@@ -5,6 +5,7 @@
  */
 package com.plugin.tryplugin.views;
 
+import java.io.Console;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.TreeColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -30,6 +32,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.osgi.framework.internal.core.ConsoleMsg;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -48,21 +51,40 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.console.ConsolePlugin;
+import org.eclipse.ui.console.IConsole;
+import org.eclipse.ui.console.IConsoleConstants;
+import org.eclipse.ui.console.IConsoleManager;
+import org.eclipse.ui.console.IConsoleView;
+import org.eclipse.ui.console.MessageConsole;
+import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.DrillDownAdapter;
 import org.eclipse.ui.part.ViewPart;
 
+import com.plugin.tryplugin.core.app.TryCommandRunner;
+import com.plugin.tryplugin.core.models.ITryCommandView;
+import com.plugin.tryplugin.core.models.ServerConfig;
+import com.plugin.tryplugin.core.models.TryProject;
 
-public class SampleView extends ViewPart {
+
+public class MainView extends ViewPart {
 
 	/**
 	 * The ID of the view as specified by the extension.
 	 */
-	public static final String ID = "com.plugin.tryplugin.views.SampleView";
+	public static final String ID = "com.plugin.tryplugin.views.MainView";
 
+	/*
+	 * Listener to SSH Events
+	 */
+	private ITryCommandView tryCommandView;
+	
 	private TreeViewer treeViewer;
 	private DrillDownAdapter drillDownAdapter;
 	
@@ -78,7 +100,7 @@ public class SampleView extends ViewPart {
 	
 	private Text passwordText;
 	private Text usernameText;
-	private Text text;
+	private Text remoteHostText;
 	private Text assignmentCodeText;
 	private Text instructorAccountText;
 	 
@@ -175,6 +197,37 @@ public class SampleView extends ViewPart {
 	}
 	class NameSorter extends ViewerSorter {
 	}
+   private MessageConsole findConsole(String name) {
+	      ConsolePlugin plugin = ConsolePlugin.getDefault();
+	      IConsoleManager conMan = plugin.getConsoleManager();
+	      IConsole[] existing = conMan.getConsoles();
+	      for (int i = 0; i < existing.length; i++)
+	         if (name.equals(existing[i].getName())){
+	        	 MessageConsole myConsole =  (MessageConsole) existing[i];
+	        	 showConsole(myConsole);
+	             return  myConsole;
+	         }
+	      //no console found, so create a new one
+	      MessageConsole myConsole = new MessageConsole(name, null);
+	      conMan.addConsoles(new IConsole[]{myConsole});
+    	  showConsole(myConsole);
+	      return myConsole;
+	   }
+
+	private void showConsole(MessageConsole myConsole) {
+		try {
+			IConsoleView view;
+			IWorkbenchWindow win = PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow();
+
+			String id = IConsoleConstants.ID_CONSOLE_VIEW;
+			view = (IConsoleView) win.getActivePage().showView(id);
+			view.display(myConsole);
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
+
+	}
 
 	/**
 	 * This is a callback that will allow us
@@ -182,6 +235,40 @@ public class SampleView extends ViewPart {
 	 */
 	public void createPartControl(Composite parent) {
 		FormToolkit toolkit = new FormToolkit(parent.getDisplay());
+		tryCommandView = new ITryCommandView() {
+			@Override
+			public void onError(Exception e) {
+				MessageConsole myConsole = findConsole("TryPlugin");
+				MessageConsoleStream out = myConsole.newMessageStream();
+				out.println("-----Try Error Started---------------");
+				out.println("-------------------------------------");
+				out.println(e.toString());
+				out.println("-----Try Error Completed-----------");
+				out.println("-------------------------------------");
+				out.println("");
+				out.println("");
+			}
+
+			@Override
+			public void onCommandExecuted(String result, int exitStatus) {
+				MessageConsole myConsole = findConsole("TryPlugin");
+				MessageConsoleStream out = myConsole.newMessageStream();
+				out.println("-----Try Command Started-------------");
+				out.println("-------------------------------------");
+				out.println(result);
+				out.println("");
+				out.println("exit-status:"+exitStatus);
+				out.println("-----Try Command Completed-----------");
+				out.println("-------------------------------------");
+				out.println("");
+				out.println("");
+			}
+			
+			@Override
+			public boolean promptYesNoRSAKeyFingerprint(String str) {
+				return MessageDialog.openConfirm(null, "Verify RSA Key", str);
+			}
+		};
 	    
 		/*Section 1*/
 		createTryProjectConfigurationForm(toolkit,parent);
@@ -295,8 +382,16 @@ public class SampleView extends ViewPart {
 		lblRemoteHost.setBounds(10, 14, 102, 25);
 		lblRemoteHost.setText("Remote host:");
 
-		text = new Text(form.getBody(), SWT.BORDER);		
-		text.setBounds(158, 10, 172, 25);
+		remoteHostText = new Text(form.getBody(), SWT.BORDER);		
+		remoteHostText.setBounds(158, 10, 172, 25);
+		
+		
+		Label lblUsername = new Label(form.getBody(), SWT.NONE);
+		lblUsername.setText("Username:");
+		lblUsername.setBounds(10, 42, 102, 25);
+		
+		usernameText = new Text(form.getBody(), SWT.BORDER);
+		usernameText.setBounds(158, 40, 172, 25);
 		
 		Label lblPassword = new Label(form.getBody(), SWT.NONE);
 		lblPassword.setText("Password:");
@@ -306,13 +401,6 @@ public class SampleView extends ViewPart {
 		passwordText.setEchoChar('*');
 		passwordText.setBounds(158, 68, 172, 25);
 		
-		
-		Label lblUsername = new Label(form.getBody(), SWT.NONE);
-		lblUsername.setText("Username:");
-		lblUsername.setBounds(10, 42, 102, 25);
-		
-		usernameText = new Text(form.getBody(), SWT.BORDER);
-		usernameText.setBounds(158, 40, 172, 25);
 		
 		Label lblInstructorAccount = new Label(form.getBody(), SWT.NONE);
 		lblInstructorAccount.setText("Instructor account:");
@@ -329,12 +417,35 @@ public class SampleView extends ViewPart {
 		assignmentCodeText.setBounds(158, 126, 172, 25);
 		
 		Button btnRun = new Button(form.getBody(), SWT.NONE);
+		
+		
+		/*
+		 * Business logic when running the plugin
+		 */
 		btnRun.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				usernameText.setText("Hello worlds");
+				// create try command runner object
+				TryCommandRunner runner = new TryCommandRunner();
+				
+				// create the remote server configuration
+				ServerConfig config = new ServerConfig(remoteHostText.getText(),usernameText.getText(),passwordText.getText());
+				
+				// get the files to uploaded
+				ArrayList<String> filenames = new ArrayList<String>();
+				for(FileModel fileModel: tryElement) filenames.add(fileModel.fullPath);
+				
+				// create the try project configuration
+				TryProject project= new TryProject(instructorAccountText.getText(), assignmentCodeText.getText(), filenames);
+				
+				// set the view listener to SSH events
+				runner.setView(tryCommandView);
+				
+				// run the try command
+				runner.run(config, project);
 			}
 		});
+		
 		btnRun.setBounds(10, 160, 60, 60);
 		btnRun.setText("Run");
 		
@@ -346,7 +457,7 @@ public class SampleView extends ViewPart {
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
-				SampleView.this.fillContextMenu(manager);
+				MainView.this.fillContextMenu(manager);
 			}
 		});
 		Menu menu = menuMgr.createContextMenu(treeViewer.getControl());
@@ -359,7 +470,7 @@ public class SampleView extends ViewPart {
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
-				SampleView.this.fillContextMenu(manager);
+				MainView.this.fillContextMenu(manager);
 			}
 		});
 		Menu menu = menuMgr.createContextMenu(table.getControl());

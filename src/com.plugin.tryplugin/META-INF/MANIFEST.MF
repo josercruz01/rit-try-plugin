@@ -7,6 +7,10 @@ Bundle-Activator: com.plugin.tryplugin.Activator
 Bundle-Vendor: PLUGIN
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.ui.forms;bundle-version="3.5.200"
+ org.eclipse.ui.forms;bundle-version="3.5.200",
+ org.eclipse.ui.console
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: lib/jsch-0.1.49.jar,
+ lib/mockito-all-1.9.5.jar,
+ .
