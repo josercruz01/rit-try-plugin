@@ -354,7 +354,7 @@ public class MainView extends ViewPart {
 	    table.setContentProvider(tmp);
 	    
 	    TableViewerColumn viewerColumn = new TableViewerColumn(table, SWT.LEFT);
-	    viewerColumn.getColumn().setWidth(100);
+	    viewerColumn.getColumn().setWidth(300);
 	    viewerColumn.setLabelProvider(new ColumnLabelProvider () {
 	      @Override
 	      public String getText(Object element) {
