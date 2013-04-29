@@ -1,15 +1,18 @@
 package com.plugin.tryplugin.core.test;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyVararg;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import org.junit.After;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentMatcher;
-import org.mockito.internal.matchers.VarargMatcher;
 
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
@@ -22,8 +25,6 @@ import com.plugin.tryplugin.core.app.TryCommandRunner;
 import com.plugin.tryplugin.core.models.ITryCommandView;
 import com.plugin.tryplugin.core.models.ServerConfig;
 import com.plugin.tryplugin.core.models.TryProject;
-
-import static org.mockito.Mockito.*;
 
 public class TryCommandRunnerTest {
 	ITryCommandRunner commandRunner;
@@ -85,6 +86,7 @@ public class TryCommandRunnerTest {
 	}
 	
 	@Test
+	@SuppressWarnings("unchecked")
 	public void testRun_whenFailureToConnect() throws Exception {
 		// Establish Context
 		ISSHSession session = mock(ISSHSession.class);
@@ -99,6 +101,7 @@ public class TryCommandRunnerTest {
 	}
 	
 	@Test
+	@SuppressWarnings("unchecked")
 	public void testRun_whenFailureToUploadFile() throws Exception {
 		// Establish Context
 		ISSHSession session = mock(ISSHSession.class);

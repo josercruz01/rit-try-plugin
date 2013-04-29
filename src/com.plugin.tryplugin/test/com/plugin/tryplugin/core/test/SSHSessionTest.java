@@ -20,6 +20,7 @@ import com.plugin.tryplugin.core.app.ISSHSession;
 import com.plugin.tryplugin.core.app.SSHSession;
 import com.plugin.tryplugin.core.models.ITryCommandView;
 
+@SuppressWarnings("unused")
 public class SSHSessionTest {
 	ISSHSession session;
 

@@ -38,6 +38,7 @@ import com.plugin.tryplugin.views.SampleView.FileModel;
 import com.plugin.tryplugin.views.SampleView.TreeObject;
 import com.plugin.tryplugin.views.SampleView.TreeParent;
 
+@SuppressWarnings(value = { "all" })
 public class TryPluginMainView extends ViewPart {
 	
 	public static final String ID = "com.plugin.tryplugin.views.TryPluginMainView";

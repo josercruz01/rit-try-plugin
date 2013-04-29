@@ -1,55 +1,59 @@
+/*
+ * @author Wander Bravo
+ * @author Jose Raymundo Cruz
+ * 
+ */
 package com.plugin.tryplugin.views;
 
-
+import java.io.File;
 import java.util.ArrayList;
 
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.ui.forms.events.HyperlinkAdapter;
-import org.eclipse.ui.forms.widgets.Form;
-import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.Hyperlink;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.forms.widgets.TableWrapData;
-import org.eclipse.ui.forms.widgets.TableWrapLayout;
-import org.eclipse.ui.part.*;
-	
-import org.eclipse.jface.viewers.*;
-import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.layout.TreeColumnLayout;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.jface.action.*;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.layout.TreeColumnLayout;
-import org.eclipse.ui.*;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.SWT;
-import org.eclipse.core.runtime.IAdaptable;
-
-import java.awt.Toolkit;
-import java.io.File;
-import java.net.URL;
-
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.text.PasswordView;
-
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Path;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.forms.widgets.Form;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.ui.part.DrillDownAdapter;
+import org.eclipse.ui.part.ViewPart;
 
 
 public class SampleView extends ViewPart {
@@ -59,11 +63,9 @@ public class SampleView extends ViewPart {
 	 */
 	public static final String ID = "com.plugin.tryplugin.views.SampleView";
 
-	//private TreeViewer viewer;
 	private TreeViewer treeViewer;
 	private DrillDownAdapter drillDownAdapter;
 	
-	private ScrolledForm form;
 	
 	private Action action1;
 	private Action action2;
@@ -74,16 +76,11 @@ public class SampleView extends ViewPart {
 	private TableViewer table;
 	private ArrayList<FileModel> tryElement = new ArrayList<FileModel>();
 	
-	private String tryStatus="";
-	
-	
 	private Text passwordText;
 	private Text usernameText;
 	private Text text;
 	private Text assignmentCodeText;
 	private Text instructorAccountText;
-	private Text outputTry;
-	
 	 
 	class TreeObject implements IAdaptable {
 		private String name;
@@ -105,16 +102,17 @@ public class SampleView extends ViewPart {
 		public String toString() {
 			return getName();
 		}
+		@SuppressWarnings("rawtypes")
 		public Object getAdapter(Class key) {
 			return null;
 		}
 	}
 	
 	class TreeParent extends TreeObject {
-		private ArrayList children;
+		private ArrayList<TreeObject> children;
 		public TreeParent(String name) {
 			super(name);
-			children = new ArrayList();
+			children = new ArrayList<TreeObject>();
 		}
 		public void addChild(TreeObject child) {
 			children.add(child);
@@ -125,7 +123,7 @@ public class SampleView extends ViewPart {
 			child.setParent(null);
 		}
 		public TreeObject [] getChildren() {
-			return (TreeObject [])children.toArray(new TreeObject[children.size()]);
+			return children.toArray(new TreeObject[children.size()]);
 		}
 		public boolean hasChildren() {
 			return children.size()>0;
@@ -134,7 +132,6 @@ public class SampleView extends ViewPart {
 
 	class ViewContentProvider implements IStructuredContentProvider, 
 										   ITreeContentProvider {
-		private TreeParent invisibleRoot;
 		
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
 		}
@@ -180,25 +177,30 @@ public class SampleView extends ViewPart {
 	}
 
 	/**
-	 * The constructor.
-	 */		
-
-	/**
 	 * This is a callback that will allow us
 	 * to create the viewer and initialize it.
 	 */
 	public void createPartControl(Composite parent) {
-		
 		FormToolkit toolkit = new FormToolkit(parent.getDisplay());
 	    
 		/*Section 1*/
-		Section section2 = toolkit.createSection(parent, Section.DESCRIPTION
-		        | Section.TITLE_BAR);
-		
-	    section2.setText("Files Local Machine"); //$NON-NLS-1$
-	    section2.setDescription("These files are going to be included in List above");
+		createTryProjectConfigurationForm(toolkit,parent);
 	    
-	    Composite composite = toolkit.createComposite(section2, SWT.WRAP);
+	    /*Section 2*/
+		createFilesAddedView(toolkit,parent);
+	    
+		/*Section 3*/		
+		createBrowseLocalFilesView(toolkit,parent);
+	    
+	}
+
+	private void createBrowseLocalFilesView(FormToolkit toolkit, Composite parent) {
+		Section localFilesSection = toolkit.createSection(parent,Section.TITLE_BAR | Section.DESCRIPTION);
+		
+	    localFilesSection.setText("Local Files"); 
+	    localFilesSection.setDescription("Double click to add to current project"); 
+	    
+	    Composite composite = toolkit.createComposite(localFilesSection, SWT.WRAP);
 		composite.setBounds(10, 94, 64, 64);
 		
 		FormData fd_composite = new FormData();
@@ -217,7 +219,6 @@ public class SampleView extends ViewPart {
 		
 		drillDownAdapter = new DrillDownAdapter(treeViewer);
 		
-		
 		treeViewer.setContentProvider(new ViewContentProvider());
 		
 		treeViewer.setLabelProvider(new ViewLabelProvider());
@@ -233,36 +234,22 @@ public class SampleView extends ViewPart {
 		hookContextMenu();
 		hookDoubleClickAction();		
 		contributeToActionBars();		
-		section2.setClient(composite);						
-		/*End Section 1*/
+		localFilesSection.setClient(composite);						
+	}
+
+	private void createFilesAddedView(FormToolkit toolkit, Composite parent) {
+	    Section section = toolkit.createSection(parent, Section.TITLE_BAR | Section.DESCRIPTION);
+	    section.setText("Files selected"); 
+	    section.setDescription("Double click to remove from current project");
 	    
+	    Composite client = toolkit.createComposite(section, SWT.WRAP);
 	    
-	    /*Section 2*/
-	    // Lets make a layout for the first section of the screen
-		
 	    GridLayout layout = new GridLayout();
 	    layout.numColumns = 1;
 	    layout.marginWidth = 2;
 	    layout.marginHeight = 2;
 	    
-	    // Creating the Screen
-	    Section section = toolkit.createSection(parent, Section.DESCRIPTION
-	        | Section.TITLE_BAR);
-	    
-	    section.setText("Files selected"); 
-	    section.setDescription("These files are going to be included in the try-command");
-	    // Composite for storing the data
-	    
-	    Composite client = toolkit.createComposite(section, SWT.WRAP);
-	    
-	    layout = new GridLayout();
-	    layout.numColumns = 1;
-	    layout.marginWidth = 2;
-	    layout.marginHeight = 2;
-	    
 	    client.setLayout(layout);
-	    
-	    
 	    
 	    Table t = toolkit.createTable(client, SWT.NULL);
 	    
@@ -275,15 +262,12 @@ public class SampleView extends ViewPart {
 
 	    section.setClient(client);
 	    
-	    //tableViewer
-	    //Table	    
-	 
 	    table = new TableViewer(t);
 	    ArrayContentProvider tmp =new ArrayContentProvider(); 
 	    table.setContentProvider(tmp);
 	    
-	    TableViewerColumn viewerColumn = new TableViewerColumn(table, SWT.RIGHT);
-	    viewerColumn.getColumn().setWidth(400);
+	    TableViewerColumn viewerColumn = new TableViewerColumn(table, SWT.LEFT);
+	    viewerColumn.getColumn().setWidth(100);
 	    viewerColumn.setLabelProvider(new ColumnLabelProvider () {
 	      @Override
 	      public String getText(Object element) {
@@ -297,45 +281,15 @@ public class SampleView extends ViewPart {
 	      
 	    });
 	    
-	    makeActions2();
 		hookContextMenu2();
 		hookDoubleClickAction2();
+	    
 		
-		  /*
-	    viewerColumn.setLabelProvider(new StyledCellLabelProvider() {
-	    	@Override
-	    	  public void update(ViewerCell cell) {
-	    	    StyledString text = new StyledString();
-	    	    
-	    	    StyleRange myStyledRange = new StyleRange(17, 2, null, Display
-	    	      .getCurrent().getSystemColor(SWT.COLOR_YELLOW));
-	    	    
-	    	    String value = (String)cell.getElement();
-	    	    text.append(value, StyledString.DECORATIONS_STYLER);	    	    
-	    	    
-	    	    cell.setText(text.toString());
+	}
 
-	    	    StyleRange[] range = { myStyledRange };
-	    	    cell.setStyleRanges(range);
-	    	    
-	    	    super.update(cell);
-	    	  };
-	  	      
-	    	});
-	    */
-	    
-	    //getSite().setSelectionProvider(table);
-	    //table.setInput(tryElement);
-	    
-	    /*End Section 2*/
-	    
-		/*Section 3*/		
-			
-	    form = toolkit.createScrolledForm(parent);
-	    form.setText("Configure the Connection to the Server");
-	    
-	    form.setMinWidth(400);
-	    	    
+	private void createTryProjectConfigurationForm(FormToolkit toolkit, Composite parent) {
+		Form form= toolkit.createForm(parent);
+	    form.setText("Project Configuration");
 	    
 	    Label lblRemoteHost = new Label(form.getBody(), SWT.NONE);
 		lblRemoteHost.setBounds(10, 14, 102, 25);
@@ -357,13 +311,11 @@ public class SampleView extends ViewPart {
 		lblUsername.setText("Username:");
 		lblUsername.setBounds(10, 42, 102, 25);
 		
-		
 		usernameText = new Text(form.getBody(), SWT.BORDER);
 		usernameText.setBounds(158, 40, 172, 25);
 		
-		
 		Label lblInstructorAccount = new Label(form.getBody(), SWT.NONE);
-		lblInstructorAccount.setText("Instructor Account:");
+		lblInstructorAccount.setText("Instructor account:");
 		lblInstructorAccount.setBounds(10, 98, 143, 25);
 		
 		instructorAccountText = new Text(form.getBody(), SWT.BORDER);
@@ -376,8 +328,6 @@ public class SampleView extends ViewPart {
 		assignmentCodeText = new Text(form.getBody(), SWT.BORDER);
 		assignmentCodeText.setBounds(158, 126, 172, 25);
 		
-		
-		
 		Button btnRun = new Button(form.getBody(), SWT.NONE);
 		btnRun.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -385,23 +335,9 @@ public class SampleView extends ViewPart {
 				usernameText.setText("Hello worlds");
 			}
 		});
-		btnRun.setBounds(348, 10, 76, 46);
+		btnRun.setBounds(10, 160, 60, 60);
 		btnRun.setText("Run");
 		
-		Label lblOutput = new Label(form.getBody(), SWT.NONE);
-		lblOutput.setText("Output:");
-		lblOutput.setBounds(10, 200, 76, 25);
-		
-		
-		// This is the Text field for the OUTPUT.
-		outputTry = new Text(form.getBody(),  SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);		
-		outputTry.setEditable(false);
-		outputTry.setBounds(10, 250, 370, 300);
-		
-		
-		
-	    /*End Section 3*/
-	    
 	}
 
 	private void hookContextMenu() {
@@ -448,7 +384,6 @@ public class SampleView extends ViewPart {
 		manager.add(action2);
 		manager.add(new Separator());
 		drillDownAdapter.addNavigationActions(manager);
-		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 	
@@ -466,14 +401,12 @@ public class SampleView extends ViewPart {
 		
 		action1 = new Action() {
 			public void run() {
-				//showMessage("Action 1 executed");
 				ISelection selection = treeViewer.getSelection();
 				Object obj = ((IStructuredSelection)selection).getFirstElement();
 				File tmp = (File)obj;				
 				
 				if(!tmp.isDirectory())
 					{
-						//showMessage("Trying to upload "+obj.toString());
 						if(!tryElement.contains(new FileModel(obj.toString())))
 						{	
 							tryElement.add(new FileModel(obj.toString()));						
@@ -518,7 +451,6 @@ public class SampleView extends ViewPart {
 				
 				if(!tmp.isDirectory())
 					{
-						//showMessage("Trying to upload "+obj.toString());
 						if(!tryElement.contains(new FileModel(obj.toString())))
 						{	
 							tryElement.add(new FileModel(obj.toString()));						
@@ -546,12 +478,6 @@ public class SampleView extends ViewPart {
 		
 	}
 
-	private void makeActions2() {
-		
-		
-		
-	
-	}
 	private void hookDoubleClickAction() {
 		
 		treeViewer.addDoubleClickListener(new IDoubleClickListener() {
@@ -570,12 +496,6 @@ public class SampleView extends ViewPart {
 	}
 	
 	
-	private void showMessage(String message) {
-		MessageDialog.openInformation(
-				treeViewer.getControl().getShell(),
-			" ",
-			message);
-	}
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
@@ -600,7 +520,7 @@ public class SampleView extends ViewPart {
 		public String toString()
 		{
 			File tmp = new File(this.fullPath);			
-			return ".. "+tmp.getName();
+			return tmp.getName();
 		}		
 	}
 }
